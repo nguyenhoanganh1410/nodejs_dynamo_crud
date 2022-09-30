@@ -1,0 +1,75 @@
+<div class="container">
+    <div class="d-flex justify-content-between p-2 mt-2">
+        <h2>Basic Table</h2>
+        <a href="/student/add" class="btn btn-primary">Add Student</a>
+
+    </div>
+    <table class="table table-hover">
+      <thead>
+        <tr>
+          <th>Firstname</th>
+          <th>Lastname</th>
+          <th>Email</th>
+          <th>options</th>
+          
+        </tr>
+      </thead>
+      <tbody>
+        <% data.forEach(function(item){ %>
+        
+          <tr style="cursor: pointer;">
+            <td><%= item.first_name %></td>
+            <td><%= item.last_name %></td>
+            <td><%= item.email %></td>
+            <td>
+              <a href="" data-whatever="<%= item.id %>" class="btn btn-danger" data-toggle="modal" data-target="#exampleModal">Delete</a>
+
+              <a href="/students/<%= item.id %>/edit" class="btn btn-primary">Update</a>
+           </td>
+        <% }) %>
+       
+       
+      </tbody>
+    </table>
+</div>
+
+
+
+<div id="exampleModal" class="modal" tabindex="-1" role="dialog">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Xóa Khóa Học</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <p>Bạn có chắc muốn xóa không?</p>
+      </div>
+      <div class="modal-footer">
+        <button id="btn-delete-course" type="button" class="btn btn-danger">Xóa</button>
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Đóng</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<form method="POST" id="form_delete"></form>
+<script>
+    var id;
+    window.addEventListener('DOMContentLoaded', (event) => {
+            $('#exampleModal').on('show.bs.modal', function (event) {
+                var button = $(event.relatedTarget) // Button that triggered the modal
+                id = button.data('whatever') // Extract info from data-* attributes
+                console.log(id);
+            })
+
+            $( "#btn-delete-course" ).click(function() {
+                $('#form_delete').attr('action', `/students/${id}?_method=DELETE`);
+                $( "#form_delete" ).submit();
+            });
+            
+    });
+</script>
